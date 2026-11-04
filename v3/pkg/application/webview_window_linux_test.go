@@ -4,7 +4,7 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/wailsapp/wails/v3/pkg/events"
+	"github.com/Mag1cFall/wails/v3/pkg/events"
 )
 
 func TestChangedLinuxWindowStateEvents(t *testing.T) {

@@ -4,7 +4,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/wailsapp/wails/v3/pkg/application"
+	"github.com/Mag1cFall/wails/v3/pkg/application"
 )
 
 // TypeMappingService is a service for testing type mappings.

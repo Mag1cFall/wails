@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/wailsapp/wails/v3/internal/flags"
+	"github.com/Mag1cFall/wails/v3/internal/flags"
 )
 
 func TestMergeTags(t *testing.T) {

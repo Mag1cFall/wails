@@ -250,9 +250,9 @@ import (
 
 	"encoding/json"
 
-	"github.com/wailsapp/wails/v3/internal/assetserver/webview"
-	"github.com/wailsapp/wails/v3/internal/operatingsystem"
-	"github.com/wailsapp/wails/v3/pkg/events"
+	"github.com/Mag1cFall/wails/v3/internal/assetserver/webview"
+	"github.com/Mag1cFall/wails/v3/internal/operatingsystem"
+	"github.com/Mag1cFall/wails/v3/pkg/events"
 )
 
 type macosApp struct {

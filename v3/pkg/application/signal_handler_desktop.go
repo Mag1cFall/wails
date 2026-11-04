@@ -5,7 +5,7 @@ package application
 import (
 	"os"
 
-	"github.com/wailsapp/wails/v3/internal/signal"
+	"github.com/Mag1cFall/wails/v3/internal/signal"
 )
 
 // setupSignalHandler sets up signal handling for desktop platforms

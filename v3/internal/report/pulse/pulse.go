@@ -8,8 +8,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/wailsapp/wails/v3/internal/report"
-	"github.com/wailsapp/wails/v3/internal/report/pulse/ansi"
+	"github.com/Mag1cFall/wails/v3/internal/report"
+	"github.com/Mag1cFall/wails/v3/internal/report/pulse/ansi"
 )
 
 // Reporter renders a wake build as the "Pulse" TUI.

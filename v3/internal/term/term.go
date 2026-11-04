@@ -7,8 +7,8 @@ import (
 	"github.com/charmbracelet/lipgloss"
 	"github.com/muesli/termenv"
 	"github.com/pterm/pterm"
-	"github.com/wailsapp/wails/v3/internal/generator/config"
-	"github.com/wailsapp/wails/v3/internal/version"
+	"github.com/Mag1cFall/wails/v3/internal/generator/config"
+	"github.com/Mag1cFall/wails/v3/internal/version"
 	"golang.org/x/term"
 )
 

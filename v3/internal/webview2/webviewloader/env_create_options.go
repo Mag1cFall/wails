@@ -6,7 +6,7 @@ import (
 	"unicode/utf16"
 	"unsafe"
 
-	"github.com/wailsapp/wails/v3/internal/webview2/pkg/combridge"
+	"github.com/Mag1cFall/wails/v3/internal/webview2/pkg/combridge"
 	"golang.org/x/sys/windows"
 )
 

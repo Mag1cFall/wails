@@ -10,23 +10,23 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/wailsapp/wails/v3/internal/buildinfo"
-	"github.com/wailsapp/wails/v3/internal/s"
-	"github.com/wailsapp/wails/v3/internal/term"
-	"github.com/wailsapp/wails/v3/internal/version"
+	"github.com/Mag1cFall/wails/v3/internal/buildinfo"
+	"github.com/Mag1cFall/wails/v3/internal/s"
+	"github.com/Mag1cFall/wails/v3/internal/term"
+	"github.com/Mag1cFall/wails/v3/internal/version"
 	"gopkg.in/yaml.v3"
 
 	"errors"
 
 	"github.com/pterm/pterm"
-	"github.com/wailsapp/wails/v3/internal/git"
-	"github.com/wailsapp/wails/v3/internal/debug"
+	"github.com/Mag1cFall/wails/v3/internal/git"
+	"github.com/Mag1cFall/wails/v3/internal/debug"
 
-	"github.com/wailsapp/wails/v3/internal/flags"
+	"github.com/Mag1cFall/wails/v3/internal/flags"
 
-	"github.com/wailsapp/wails/v3/internal/gosod"
+	"github.com/Mag1cFall/wails/v3/internal/gosod"
 
-	"github.com/wailsapp/wails/v3/internal/lo"
+	"github.com/Mag1cFall/wails/v3/internal/lo"
 )
 
 //go:embed *

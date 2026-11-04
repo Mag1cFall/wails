@@ -3,7 +3,7 @@ package wake
 import (
 	"testing"
 
-	"github.com/wailsapp/wails/v3/internal/wake/ast"
+	"github.com/Mag1cFall/wails/v3/internal/wake/ast"
 )
 
 // countSteps must count only tasks that run a real command, following both deps

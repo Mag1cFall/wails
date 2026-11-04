@@ -11,10 +11,10 @@ import (
 
 	"golang.org/x/tools/go/packages"
 
-	"github.com/wailsapp/wails/v3/internal/flags"
-	"github.com/wailsapp/wails/v3/internal/generator/collect"
-	"github.com/wailsapp/wails/v3/internal/generator/config"
-	"github.com/wailsapp/wails/v3/internal/generator/render"
+	"github.com/Mag1cFall/wails/v3/internal/flags"
+	"github.com/Mag1cFall/wails/v3/internal/generator/collect"
+	"github.com/Mag1cFall/wails/v3/internal/generator/config"
+	"github.com/Mag1cFall/wails/v3/internal/generator/render"
 )
 
 // Generator wraps all bookkeeping data structures that are needed

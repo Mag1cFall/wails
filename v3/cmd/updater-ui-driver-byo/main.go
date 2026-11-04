@@ -15,9 +15,9 @@ import (
 	"os"
 	"time"
 
-	"github.com/wailsapp/wails/v3/pkg/application"
-	"github.com/wailsapp/wails/v3/pkg/updater"
-	"github.com/wailsapp/wails/v3/pkg/updater/providers/github"
+	"github.com/Mag1cFall/wails/v3/pkg/application"
+	"github.com/Mag1cFall/wails/v3/pkg/updater"
+	"github.com/Mag1cFall/wails/v3/pkg/updater/providers/github"
 )
 
 // A deliberately minimal custom UI that looks NOTHING like the builtin

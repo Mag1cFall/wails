@@ -1,9 +1,9 @@
 package commands
 
 import (
-	"github.com/wailsapp/wails/v3/internal/flags"
-	"github.com/wailsapp/wails/v3/internal/service"
-	"github.com/wailsapp/wails/v3/internal/term"
+	"github.com/Mag1cFall/wails/v3/internal/flags"
+	"github.com/Mag1cFall/wails/v3/internal/service"
+	"github.com/Mag1cFall/wails/v3/internal/term"
 	"strings"
 )
 

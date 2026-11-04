@@ -6,10 +6,10 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/wailsapp/wails/v3/internal/buildwarnings"
-	"github.com/wailsapp/wails/v3/internal/flags"
-	"github.com/wailsapp/wails/v3/internal/term"
-	"github.com/wailsapp/wails/v3/internal/wake"
+	"github.com/Mag1cFall/wails/v3/internal/buildwarnings"
+	"github.com/Mag1cFall/wails/v3/internal/flags"
+	"github.com/Mag1cFall/wails/v3/internal/term"
+	"github.com/Mag1cFall/wails/v3/internal/wake"
 )
 
 // runTaskFunc is a variable to allow mocking in tests

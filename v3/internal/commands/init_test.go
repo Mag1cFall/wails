@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/wailsapp/wails/v3/internal/defaults"
-	"github.com/wailsapp/wails/v3/internal/flags"
+	"github.com/Mag1cFall/wails/v3/internal/defaults"
+	"github.com/Mag1cFall/wails/v3/internal/flags"
 )
 
 func TestGitURLToModulePath(t *testing.T) {

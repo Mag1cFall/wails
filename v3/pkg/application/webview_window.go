@@ -10,9 +10,9 @@ import (
 	"sync/atomic"
 	"unsafe"
 
-	"github.com/wailsapp/wails/v3/internal/assetserver"
-	"github.com/wailsapp/wails/v3/internal/optional"
-	"github.com/wailsapp/wails/v3/pkg/events"
+	"github.com/Mag1cFall/wails/v3/internal/assetserver"
+	"github.com/Mag1cFall/wails/v3/internal/optional"
+	"github.com/Mag1cFall/wails/v3/pkg/events"
 )
 
 // Enabled means the feature should be enabled

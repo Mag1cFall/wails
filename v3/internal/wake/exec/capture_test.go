@@ -3,7 +3,7 @@ package exec
 import (
 	"testing"
 
-	"github.com/wailsapp/wails/v3/internal/report"
+	"github.com/Mag1cFall/wails/v3/internal/report"
 )
 
 type recordingReporter struct {

@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/wailsapp/wails/v3/internal/gosod"
+	"github.com/Mag1cFall/wails/v3/internal/gosod"
 	"gopkg.in/yaml.v3"
 	"howett.net/plist"
 )

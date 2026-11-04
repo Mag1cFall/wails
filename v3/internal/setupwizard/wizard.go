@@ -20,10 +20,10 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/wailsapp/wails/v3/internal/browser"
-	"github.com/wailsapp/wails/v3/internal/doctor"
-	"github.com/wailsapp/wails/v3/internal/operatingsystem"
-	"github.com/wailsapp/wails/v3/internal/version"
+	"github.com/Mag1cFall/wails/v3/internal/browser"
+	"github.com/Mag1cFall/wails/v3/internal/doctor"
+	"github.com/Mag1cFall/wails/v3/internal/operatingsystem"
+	"github.com/Mag1cFall/wails/v3/internal/version"
 	"gopkg.in/yaml.v3"
 )
 

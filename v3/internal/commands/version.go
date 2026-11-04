@@ -1,7 +1,7 @@
 package commands
 
 import (
-	"github.com/wailsapp/wails/v3/internal/version"
+	"github.com/Mag1cFall/wails/v3/internal/version"
 )
 
 type VersionOptions struct{}

@@ -5,8 +5,8 @@ import (
 
 	"log"
 
-	"github.com/wailsapp/wails/v3/pkg/application"
-	"github.com/wailsapp/wails/v3/pkg/services/dock"
+	"github.com/Mag1cFall/wails/v3/pkg/application"
+	"github.com/Mag1cFall/wails/v3/pkg/services/dock"
 )
 
 // Wails uses Go's `embed` package to embed the frontend files into the binary.

@@ -8,8 +8,8 @@ import (
 	"strings"
 
 	"github.com/leaanthony/dmg/dmg"
-	"github.com/wailsapp/wails/v3/internal/flags"
-	"github.com/wailsapp/wails/v3/internal/packager"
+	"github.com/Mag1cFall/wails/v3/internal/flags"
+	"github.com/Mag1cFall/wails/v3/internal/packager"
 )
 
 // ToolPackage generates a package in the specified format

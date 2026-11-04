@@ -26,8 +26,8 @@ import (
 	"time"
 
 	"github.com/pterm/pterm"
-	"github.com/wailsapp/wails/v3/internal/github"
-	"github.com/wailsapp/wails/v3/internal/term"
+	"github.com/Mag1cFall/wails/v3/internal/github"
+	"github.com/Mag1cFall/wails/v3/internal/term"
 )
 
 // This file implements the `wails3 updater` command group: the publishing

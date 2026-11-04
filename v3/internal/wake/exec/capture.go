@@ -3,7 +3,7 @@ package exec
 import (
 	"bytes"
 
-	"github.com/wailsapp/wails/v3/internal/report"
+	"github.com/Mag1cFall/wails/v3/internal/report"
 )
 
 // captureWriter is the sink for a command's stdout and stderr. It splits the

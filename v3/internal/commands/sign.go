@@ -10,9 +10,9 @@ import (
 	"time"
 
 	"github.com/pterm/pterm"
-	"github.com/wailsapp/wails/v3/internal/defaults"
-	"github.com/wailsapp/wails/v3/internal/flags"
-	"github.com/wailsapp/wails/v3/internal/keychain"
+	"github.com/Mag1cFall/wails/v3/internal/defaults"
+	"github.com/Mag1cFall/wails/v3/internal/flags"
+	"github.com/Mag1cFall/wails/v3/internal/keychain"
 )
 
 // resolveSigningDefaults fills in any signing options not supplied via flags from

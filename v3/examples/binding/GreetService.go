@@ -4,7 +4,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/wailsapp/wails/v3/examples/binding/data"
+	"github.com/Mag1cFall/wails/v3/examples/binding/data"
 )
 
 // GreetService is a service that greets people

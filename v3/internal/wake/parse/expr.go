@@ -7,8 +7,8 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/wailsapp/wails/v3/internal/wake/ast"
-	"github.com/wailsapp/wails/v3/internal/wake/platform"
+	"github.com/Mag1cFall/wails/v3/internal/wake/ast"
+	"github.com/Mag1cFall/wails/v3/internal/wake/platform"
 )
 
 var bareVarRegex = regexp.MustCompile(`\{\{(\s*)([A-Z_][A-Z0-9_]*)(\s*)\}\}`)

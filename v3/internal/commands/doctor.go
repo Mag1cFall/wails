@@ -1,8 +1,8 @@
 package commands
 
 import (
-	"github.com/wailsapp/wails/v3/internal/doctor"
-	"github.com/wailsapp/wails/v3/internal/flags"
+	"github.com/Mag1cFall/wails/v3/internal/doctor"
+	"github.com/Mag1cFall/wails/v3/internal/flags"
 )
 
 func Doctor(options *flags.Doctor) error {

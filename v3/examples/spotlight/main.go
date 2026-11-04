@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/wailsapp/wails/v3/pkg/application"
+	"github.com/Mag1cFall/wails/v3/pkg/application"
 )
 
 // This example demonstrates how to create a Spotlight-like launcher window

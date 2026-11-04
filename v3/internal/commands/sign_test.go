@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/wailsapp/wails/v3/internal/flags"
+	"github.com/Mag1cFall/wails/v3/internal/flags"
 )
 
 // TestResolveSigningDefaults verifies that signing options unset via flags are

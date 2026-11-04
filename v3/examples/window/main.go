@@ -9,10 +9,10 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/wailsapp/wails/v3/internal/lo"
-	"github.com/wailsapp/wails/v3/pkg/events"
+	"github.com/Mag1cFall/wails/v3/internal/lo"
+	"github.com/Mag1cFall/wails/v3/pkg/events"
 
-	"github.com/wailsapp/wails/v3/pkg/application"
+	"github.com/Mag1cFall/wails/v3/pkg/application"
 )
 
 // This is a stub for non-windows platforms

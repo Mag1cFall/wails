@@ -4,7 +4,7 @@ import (
 	"go/types"
 	"sync/atomic"
 
-	"github.com/wailsapp/wails/v3/internal/generator/config"
+	"github.com/Mag1cFall/wails/v3/internal/generator/config"
 )
 
 // SpecialTypeCache caches types that are handled as special cases in the generation process.

@@ -847,7 +847,7 @@ func buildReleaseBody(version, changelogContent string) string {
 		"",
 		"**Installation:**",
 		"```bash",
-		fmt.Sprintf("go install github.com/wailsapp/wails/v3/cmd/wails3@%s", version),
+		fmt.Sprintf("go install github.com/Mag1cFall/wails/v3/cmd/wails3@%s", version),
 		"```",
 	}
 	switch channel {

@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/wailsapp/wails/v3/internal/assetserver/webview"
+	"github.com/Mag1cFall/wails/v3/internal/assetserver/webview"
 )
 
 type contextualAssetRequest struct {

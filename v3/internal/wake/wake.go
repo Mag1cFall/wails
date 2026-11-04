@@ -10,14 +10,14 @@ import (
 	"sync"
 	"time"
 
-	"github.com/wailsapp/wails/v3/internal/report"
-	"github.com/wailsapp/wails/v3/internal/report/pulse"
-	"github.com/wailsapp/wails/v3/internal/wake/ast"
-	"github.com/wailsapp/wails/v3/internal/wake/exec"
-	"github.com/wailsapp/wails/v3/internal/wake/fallback"
-	"github.com/wailsapp/wails/v3/internal/wake/override"
-	"github.com/wailsapp/wails/v3/internal/wake/parse"
-	"github.com/wailsapp/wails/v3/internal/wake/resolve"
+	"github.com/Mag1cFall/wails/v3/internal/report"
+	"github.com/Mag1cFall/wails/v3/internal/report/pulse"
+	"github.com/Mag1cFall/wails/v3/internal/wake/ast"
+	"github.com/Mag1cFall/wails/v3/internal/wake/exec"
+	"github.com/Mag1cFall/wails/v3/internal/wake/fallback"
+	"github.com/Mag1cFall/wails/v3/internal/wake/override"
+	"github.com/Mag1cFall/wails/v3/internal/wake/parse"
+	"github.com/Mag1cFall/wails/v3/internal/wake/resolve"
 )
 
 type ExecuteOptions struct {

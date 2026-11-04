@@ -1,8 +1,8 @@
 package resolve
 
 import (
-	"github.com/wailsapp/wails/v3/internal/wake/ast"
-	"github.com/wailsapp/wails/v3/internal/wake/platform"
+	"github.com/Mag1cFall/wails/v3/internal/wake/ast"
+	"github.com/Mag1cFall/wails/v3/internal/wake/platform"
 )
 
 func FilterPlatforms(tf *ast.Taskfile) {

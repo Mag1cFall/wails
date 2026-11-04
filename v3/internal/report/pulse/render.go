@@ -5,8 +5,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/wailsapp/wails/v3/internal/report"
-	"github.com/wailsapp/wails/v3/internal/report/pulse/ansi"
+	"github.com/Mag1cFall/wails/v3/internal/report"
+	"github.com/Mag1cFall/wails/v3/internal/report/pulse/ansi"
 )
 
 // repaintLocked rebuilds the pinned region from current state and atomically

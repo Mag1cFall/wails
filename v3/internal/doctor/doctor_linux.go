@@ -6,8 +6,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/wailsapp/wails/v3/internal/doctor/packagemanager"
-	"github.com/wailsapp/wails/v3/internal/operatingsystem"
+	"github.com/Mag1cFall/wails/v3/internal/doctor/packagemanager"
+	"github.com/Mag1cFall/wails/v3/internal/operatingsystem"
 )
 
 func getInfo() (map[string]string, bool) {

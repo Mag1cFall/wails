@@ -6,7 +6,7 @@ import (
 	"go/types"
 	"iter"
 
-	"github.com/wailsapp/wails/v3/internal/generator/config"
+	"github.com/Mag1cFall/wails/v3/internal/generator/config"
 	"golang.org/x/tools/go/packages"
 )
 

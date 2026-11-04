@@ -311,7 +311,7 @@ import (
 
 	"encoding/json"
 
-	"github.com/wailsapp/wails/v3/pkg/events"
+	"github.com/Mag1cFall/wails/v3/pkg/events"
 )
 
 var (

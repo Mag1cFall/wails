@@ -16,7 +16,7 @@ import (
 
 	"github.com/jackmordaunt/icns/v2"
 	"github.com/leaanthony/winicon"
-	"github.com/wailsapp/wails/v3/internal/operatingsystem"
+	"github.com/Mag1cFall/wails/v3/internal/operatingsystem"
 	"howett.net/plist"
 )
 

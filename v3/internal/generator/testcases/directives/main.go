@@ -13,8 +13,8 @@ package main
 import (
 	"log"
 
-	"github.com/wailsapp/wails/v3/internal/generator/testcases/directives/otherpackage"
-	"github.com/wailsapp/wails/v3/pkg/application"
+	"github.com/Mag1cFall/wails/v3/internal/generator/testcases/directives/otherpackage"
+	"github.com/Mag1cFall/wails/v3/pkg/application"
 )
 
 type IgnoredType struct {

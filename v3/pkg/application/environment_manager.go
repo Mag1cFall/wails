@@ -3,8 +3,8 @@ package application
 import (
 	"runtime"
 
-	"github.com/wailsapp/wails/v3/internal/fileexplorer"
-	"github.com/wailsapp/wails/v3/internal/operatingsystem"
+	"github.com/Mag1cFall/wails/v3/internal/fileexplorer"
+	"github.com/Mag1cFall/wails/v3/internal/operatingsystem"
 )
 
 // EnvironmentManager manages environment-related operations

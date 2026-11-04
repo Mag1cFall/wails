@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/wailsapp/wails/v3/internal/report/pulse/ansi"
+	"github.com/Mag1cFall/wails/v3/internal/report/pulse/ansi"
 )
 
 func TestVisibleWidth(t *testing.T) {

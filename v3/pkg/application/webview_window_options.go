@@ -1,8 +1,8 @@
 package application
 
 import (
-	"github.com/wailsapp/wails/v3/internal/optional"
-	"github.com/wailsapp/wails/v3/pkg/events"
+	"github.com/Mag1cFall/wails/v3/internal/optional"
+	"github.com/Mag1cFall/wails/v3/pkg/events"
 )
 
 type WindowState int

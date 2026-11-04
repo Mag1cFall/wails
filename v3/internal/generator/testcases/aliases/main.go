@@ -4,9 +4,9 @@ import (
 	"encoding"
 	"log"
 
-	"github.com/wailsapp/wails/v3/internal/generator/testcases/aliases/subpkg"
-	nobindingshere "github.com/wailsapp/wails/v3/internal/generator/testcases/no_bindings_here"
-	"github.com/wailsapp/wails/v3/pkg/application"
+	"github.com/Mag1cFall/wails/v3/internal/generator/testcases/aliases/subpkg"
+	nobindingshere "github.com/Mag1cFall/wails/v3/internal/generator/testcases/no_bindings_here"
+	"github.com/Mag1cFall/wails/v3/pkg/application"
 )
 
 // GreetService is great

@@ -7,7 +7,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/wailsapp/wails/v3/pkg/events"
+	"github.com/Mag1cFall/wails/v3/pkg/events"
 )
 
 // Note: This file uses internal package access to benchmark window internals

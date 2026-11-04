@@ -12,8 +12,8 @@ import (
 	"sync/atomic"
 	"testing"
 
-	"github.com/wailsapp/wails/v3/pkg/updater"
-	"github.com/wailsapp/wails/v3/pkg/updater/providers/keygen"
+	"github.com/Mag1cFall/wails/v3/pkg/updater"
+	"github.com/Mag1cFall/wails/v3/pkg/updater/providers/keygen"
 )
 
 const sampleUpgradeOK = `{

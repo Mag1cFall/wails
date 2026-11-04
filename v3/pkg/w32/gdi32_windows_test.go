@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/matryer/is"
-	"github.com/wailsapp/wails/v3/pkg/w32"
+	"github.com/Mag1cFall/wails/v3/pkg/w32"
 )
 
 // TestGetStockObjectReturnsValidHandle is a regression test for GetStockObject

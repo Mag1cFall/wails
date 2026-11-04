@@ -3,7 +3,7 @@ package version
 import (
 	"testing"
 
-	"github.com/wailsapp/wails/v3/internal/debug"
+	"github.com/Mag1cFall/wails/v3/internal/debug"
 )
 
 func TestStringTrimsEmbeddedVersionWhitespace(t *testing.T) {

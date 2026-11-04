@@ -3,7 +3,7 @@ package application
 import (
 	"slices"
 
-	"github.com/wailsapp/wails/v3/pkg/events"
+	"github.com/Mag1cFall/wails/v3/pkg/events"
 )
 
 // EventManager manages event-related operations

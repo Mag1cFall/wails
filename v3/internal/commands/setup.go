@@ -1,8 +1,8 @@
 package commands
 
 import (
-	"github.com/wailsapp/wails/v3/internal/setupwizard"
-	"github.com/wailsapp/wails/v3/internal/term"
+	"github.com/Mag1cFall/wails/v3/internal/setupwizard"
+	"github.com/Mag1cFall/wails/v3/internal/term"
 )
 
 type SetupOptions struct{}

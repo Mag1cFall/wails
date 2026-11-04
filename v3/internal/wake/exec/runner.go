@@ -7,9 +7,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/wailsapp/wails/v3/internal/wake/ast"
-	"github.com/wailsapp/wails/v3/internal/wake/parse"
-	"github.com/wailsapp/wails/v3/internal/wake/platform"
+	"github.com/Mag1cFall/wails/v3/internal/wake/ast"
+	"github.com/Mag1cFall/wails/v3/internal/wake/parse"
+	"github.com/Mag1cFall/wails/v3/internal/wake/platform"
 )
 
 type runCache struct {

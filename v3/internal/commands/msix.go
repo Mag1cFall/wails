@@ -13,7 +13,7 @@ import (
 	"sort"
 	"text/template"
 
-	"github.com/wailsapp/wails/v3/internal/flags"
+	"github.com/Mag1cFall/wails/v3/internal/flags"
 	"gopkg.in/yaml.v3"
 )
 

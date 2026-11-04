@@ -3,7 +3,7 @@ package github
 import (
 	"fmt"
 
-	"github.com/wailsapp/wails/v3/internal/semver"
+	"github.com/Mag1cFall/wails/v3/internal/semver"
 )
 
 const majorVersion = 3

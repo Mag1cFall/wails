@@ -29,8 +29,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/wailsapp/wails/v3/pkg/application"
-	"github.com/wailsapp/wails/v3/pkg/events"
+	"github.com/Mag1cFall/wails/v3/pkg/application"
+	"github.com/Mag1cFall/wails/v3/pkg/events"
 )
 
 //go:embed assets/index.html

@@ -1143,10 +1143,10 @@ import (
 	"time"
 	"unsafe"
 
-	"github.com/wailsapp/wails/v3/internal/assetserver"
-	"github.com/wailsapp/wails/v3/internal/runtime"
+	"github.com/Mag1cFall/wails/v3/internal/assetserver"
+	"github.com/Mag1cFall/wails/v3/internal/runtime"
 
-	"github.com/wailsapp/wails/v3/pkg/events"
+	"github.com/Mag1cFall/wails/v3/pkg/events"
 )
 
 type macosWebviewWindow struct {

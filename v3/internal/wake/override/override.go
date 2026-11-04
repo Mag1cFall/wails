@@ -4,8 +4,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/wailsapp/wails/v3/internal/wake/ast"
-	"github.com/wailsapp/wails/v3/internal/wake/parse"
+	"github.com/Mag1cFall/wails/v3/internal/wake/ast"
+	"github.com/Mag1cFall/wails/v3/internal/wake/parse"
 )
 
 // layers lists the local override layers in increasing precedence order: a

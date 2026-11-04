@@ -14,17 +14,17 @@ import (
 	"time"
 	"unsafe"
 
-	"github.com/wailsapp/wails/v3/internal/assetserver"
-	"github.com/wailsapp/wails/v3/internal/assetserver/webview"
-	"github.com/wailsapp/wails/v3/internal/capabilities"
-	"github.com/wailsapp/wails/v3/internal/debounce"
-	"github.com/wailsapp/wails/v3/internal/runtime"
-	"github.com/wailsapp/wails/v3/internal/sliceutil"
-	"github.com/wailsapp/wails/v3/internal/webview2/webviewloader"
+	"github.com/Mag1cFall/wails/v3/internal/assetserver"
+	"github.com/Mag1cFall/wails/v3/internal/assetserver/webview"
+	"github.com/Mag1cFall/wails/v3/internal/capabilities"
+	"github.com/Mag1cFall/wails/v3/internal/debounce"
+	"github.com/Mag1cFall/wails/v3/internal/runtime"
+	"github.com/Mag1cFall/wails/v3/internal/sliceutil"
+	"github.com/Mag1cFall/wails/v3/internal/webview2/webviewloader"
 
-	"github.com/wailsapp/wails/v3/internal/webview2/pkg/edge"
-	"github.com/wailsapp/wails/v3/pkg/events"
-	"github.com/wailsapp/wails/v3/pkg/w32"
+	"github.com/Mag1cFall/wails/v3/internal/webview2/pkg/edge"
+	"github.com/Mag1cFall/wails/v3/pkg/events"
+	"github.com/Mag1cFall/wails/v3/pkg/w32"
 )
 
 var edgeMap = map[string]uintptr{
@@ -2710,8 +2710,11 @@ func (w *windowsWebviewWindow) setupChromium(recovering bool) (ready bool) {
 	if !hasPermissionPolicy {
 		chromium.SetGlobalPermission(edge.CoreWebView2PermissionStateAllow)
 	}
-	if err := chromium.AddWebResourceRequestedFilterWithError("*", edge.COREWEBVIEW2_WEB_RESOURCE_CONTEXT_ALL); err != nil {
-		return w.setupChromiumConfigError(recovering, err)
+	// Only asset server requests need the Go handler; other origins load directly in WebView2
+	for _, filter := range []string{"http://wails.localhost/*", "http://wails.localhost:*/*"} {
+		if err := chromium.AddWebResourceRequestedFilterWithError(filter, edge.COREWEBVIEW2_WEB_RESOURCE_CONTEXT_ALL); err != nil {
+			return w.setupChromiumConfigError(recovering, err)
+		}
 	}
 
 	w.startRequestCancellation(w.navigateInitialPage)

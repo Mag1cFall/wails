@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/wailsapp/wails/v3/internal/templates"
+	"github.com/Mag1cFall/wails/v3/internal/templates"
 )
 
 func TestBinaryNameNormalization(t *testing.T) {

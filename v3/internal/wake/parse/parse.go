@@ -7,7 +7,7 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/wailsapp/wails/v3/internal/wake/ast"
+	"github.com/Mag1cFall/wails/v3/internal/wake/ast"
 	"gopkg.in/yaml.v3"
 )
 

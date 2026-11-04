@@ -4,16 +4,16 @@ import (
 	"os"
 	"runtime/debug"
 
-	"github.com/wailsapp/wails/v3/internal/browser"
+	"github.com/Mag1cFall/wails/v3/internal/browser"
 
 	"github.com/pterm/pterm"
-	"github.com/wailsapp/wails/v3/internal/lo"
+	"github.com/Mag1cFall/wails/v3/internal/lo"
 
 	"github.com/leaanthony/clir"
-	"github.com/wailsapp/wails/v3/internal/commands"
-	"github.com/wailsapp/wails/v3/internal/flags"
-	"github.com/wailsapp/wails/v3/internal/term"
-	"github.com/wailsapp/wails/v3/internal/wake"
+	"github.com/Mag1cFall/wails/v3/internal/commands"
+	"github.com/Mag1cFall/wails/v3/internal/flags"
+	"github.com/Mag1cFall/wails/v3/internal/term"
+	"github.com/Mag1cFall/wails/v3/internal/wake"
 )
 
 func init() {

@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/wailsapp/wails/v3/internal/report"
+	"github.com/Mag1cFall/wails/v3/internal/report"
 )
 
 // osGetwd is a tiny indirection so highlightBody's cwd-resolution can be

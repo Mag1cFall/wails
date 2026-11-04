@@ -9,7 +9,7 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/wailsapp/wails/v3/pkg/application"
+	"github.com/Mag1cFall/wails/v3/pkg/application"
 )
 
 var autorun = flag.Bool("autorun", false, "Automatically run tests and save report")

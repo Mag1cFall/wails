@@ -13,8 +13,8 @@ import (
 	"github.com/ProtonMail/go-crypto/openpgp/packet"
 	"github.com/charmbracelet/huh"
 	"github.com/pterm/pterm"
-	"github.com/wailsapp/wails/v3/internal/flags"
-	"github.com/wailsapp/wails/v3/internal/keychain"
+	"github.com/Mag1cFall/wails/v3/internal/flags"
+	"github.com/Mag1cFall/wails/v3/internal/keychain"
 )
 
 // SigningSetup configures signing variables in platform Taskfiles

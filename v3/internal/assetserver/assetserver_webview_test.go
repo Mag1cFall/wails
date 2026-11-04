@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/wailsapp/wails/v3/internal/assetserver/webview"
+	"github.com/Mag1cFall/wails/v3/internal/assetserver/webview"
 )
 
 func TestWebViewRequestCancellationReachesHandler(t *testing.T) {

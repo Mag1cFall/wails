@@ -12,8 +12,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/wailsapp/wails/v3/internal/webview2/pkg/edge"
-	"github.com/wailsapp/wails/v3/pkg/w32"
+	"github.com/Mag1cFall/wails/v3/internal/webview2/pkg/edge"
+	"github.com/Mag1cFall/wails/v3/pkg/w32"
 	"golang.org/x/sys/windows"
 )
 

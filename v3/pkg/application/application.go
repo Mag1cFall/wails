@@ -15,10 +15,10 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/wailsapp/wails/v3/internal/assetserver"
-	"github.com/wailsapp/wails/v3/internal/assetserver/webview"
-	"github.com/wailsapp/wails/v3/internal/capabilities"
-	"github.com/wailsapp/wails/v3/pkg/updater"
+	"github.com/Mag1cFall/wails/v3/internal/assetserver"
+	"github.com/Mag1cFall/wails/v3/internal/assetserver/webview"
+	"github.com/Mag1cFall/wails/v3/internal/capabilities"
+	"github.com/Mag1cFall/wails/v3/pkg/updater"
 )
 
 //go:embed assets/*

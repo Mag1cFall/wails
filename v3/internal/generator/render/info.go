@@ -4,7 +4,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/wailsapp/wails/v3/internal/generator/collect"
+	"github.com/Mag1cFall/wails/v3/internal/generator/collect"
 )
 
 // modelInfo gathers useful information about a model.

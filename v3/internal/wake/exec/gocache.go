@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/wailsapp/wails/v3/internal/wake/ast"
-	"github.com/wailsapp/wails/v3/internal/wake/parse"
+	"github.com/Mag1cFall/wails/v3/internal/wake/ast"
+	"github.com/Mag1cFall/wails/v3/internal/wake/parse"
 )
 
 // goCacheSuffix keys implicit native-Go cache entries separately from the

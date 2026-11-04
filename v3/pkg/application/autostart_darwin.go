@@ -12,7 +12,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/wailsapp/wails/v3/pkg/mac"
+	"github.com/Mag1cFall/wails/v3/pkg/mac"
 )
 
 type darwinAutostart struct {

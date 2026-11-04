@@ -8,9 +8,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/wailsapp/wails/v3/internal/buildwarnings"
-	"github.com/wailsapp/wails/v3/internal/term"
-	"github.com/wailsapp/wails/v3/internal/wake"
+	"github.com/Mag1cFall/wails/v3/internal/buildwarnings"
+	"github.com/Mag1cFall/wails/v3/internal/term"
+	"github.com/Mag1cFall/wails/v3/internal/wake"
 
 	"github.com/wailsapp/task/v3"
 	"github.com/wailsapp/task/v3/taskfile/ast"

@@ -14,7 +14,7 @@ import (
 	"net/url"
 	"testing"
 
-	"github.com/wailsapp/wails/v3/pkg/updater"
+	"github.com/Mag1cFall/wails/v3/pkg/updater"
 )
 
 func checkReq() updater.CheckRequest {

@@ -14,8 +14,8 @@ import (
 	"time"
 	"unsafe"
 
-	"github.com/wailsapp/wails/v3/pkg/application"
-	"github.com/wailsapp/wails/v3/pkg/events"
+	"github.com/Mag1cFall/wails/v3/pkg/application"
+	"github.com/Mag1cFall/wails/v3/pkg/events"
 )
 
 // systray-stress is a test harness that exercises SystemTray.SetMenu and

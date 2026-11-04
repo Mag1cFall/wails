@@ -1,6 +1,6 @@
 package nobindingshere
 
-import "github.com/wailsapp/wails/v3/internal/generator/testcases/no_bindings_here/other"
+import "github.com/Mag1cFall/wails/v3/internal/generator/testcases/no_bindings_here/other"
 
 // Person is not a number.
 type Person struct {

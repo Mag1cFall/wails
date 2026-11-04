@@ -6,7 +6,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/wailsapp/wails/v3/internal/flags"
+	"github.com/Mag1cFall/wails/v3/internal/flags"
 )
 
 const defaultVitePort = 9245

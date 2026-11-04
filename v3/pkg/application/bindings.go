@@ -10,8 +10,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/wailsapp/wails/v3/internal/hash"
-	"github.com/wailsapp/wails/v3/internal/sliceutil"
+	"github.com/Mag1cFall/wails/v3/internal/hash"
+	"github.com/Mag1cFall/wails/v3/internal/sliceutil"
 )
 
 // CallOptions defines the options for a method call.

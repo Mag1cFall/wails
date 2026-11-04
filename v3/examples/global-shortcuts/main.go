@@ -6,7 +6,7 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/wailsapp/wails/v3/pkg/application"
+	"github.com/Mag1cFall/wails/v3/pkg/application"
 )
 
 //go:embed all:assets

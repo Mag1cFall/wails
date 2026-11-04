@@ -3,7 +3,7 @@ package pulse
 import (
 	"strings"
 
-	"github.com/wailsapp/wails/v3/internal/report/pulse/ansi"
+	"github.com/Mag1cFall/wails/v3/internal/report/pulse/ansi"
 )
 
 // styler binds a Profile so call sites can paint without naming the profile

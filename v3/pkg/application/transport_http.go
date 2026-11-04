@@ -13,7 +13,7 @@ import (
 
 	"encoding/json"
 
-	"github.com/wailsapp/wails/v3/pkg/errs"
+	"github.com/Mag1cFall/wails/v3/pkg/errs"
 )
 
 // bufferPool reduces allocations for reading request bodies.

@@ -3,7 +3,7 @@ package exec
 import (
 	"testing"
 
-	"github.com/wailsapp/wails/v3/internal/wake/ast"
+	"github.com/Mag1cFall/wails/v3/internal/wake/ast"
 )
 
 // Precondition `sh:` strings are Go templates and must be expanded against the

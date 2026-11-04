@@ -3,8 +3,8 @@ package main
 import (
 	"log"
 
-	"github.com/wailsapp/wails/v3/internal/generator/testcases/struct_literal_multiple_other/services"
-	"github.com/wailsapp/wails/v3/pkg/application"
+	"github.com/Mag1cFall/wails/v3/internal/generator/testcases/struct_literal_multiple_other/services"
+	"github.com/Mag1cFall/wails/v3/pkg/application"
 )
 
 // GreetService is great

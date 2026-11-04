@@ -13,11 +13,11 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/wailsapp/wails/v3/internal/report"
-	"github.com/wailsapp/wails/v3/internal/wake/ast"
-	"github.com/wailsapp/wails/v3/internal/wake/cmds"
-	"github.com/wailsapp/wails/v3/internal/wake/parse"
-	wakeplatform "github.com/wailsapp/wails/v3/internal/wake/platform"
+	"github.com/Mag1cFall/wails/v3/internal/report"
+	"github.com/Mag1cFall/wails/v3/internal/wake/ast"
+	"github.com/Mag1cFall/wails/v3/internal/wake/cmds"
+	"github.com/Mag1cFall/wails/v3/internal/wake/parse"
+	wakeplatform "github.com/Mag1cFall/wails/v3/internal/wake/platform"
 )
 
 type Executor struct {

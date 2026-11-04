@@ -5,7 +5,7 @@ import (
 
 	"log"
 
-	"github.com/wailsapp/wails/v3/pkg/application"
+	"github.com/Mag1cFall/wails/v3/pkg/application"
 )
 
 //go:embed frontend/dist

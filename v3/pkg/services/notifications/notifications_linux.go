@@ -14,7 +14,7 @@ import (
 	"encoding/json"
 
 	"github.com/godbus/dbus/v5"
-	"github.com/wailsapp/wails/v3/pkg/application"
+	"github.com/Mag1cFall/wails/v3/pkg/application"
 )
 
 type linuxNotifier struct {

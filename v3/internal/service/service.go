@@ -7,11 +7,11 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/wailsapp/wails/v3/internal/flags"
+	"github.com/Mag1cFall/wails/v3/internal/flags"
 
-	"github.com/wailsapp/wails/v3/internal/gosod"
+	"github.com/Mag1cFall/wails/v3/internal/gosod"
 
-	"github.com/wailsapp/wails/v3/internal/lo"
+	"github.com/Mag1cFall/wails/v3/internal/lo"
 )
 
 //go:embed template

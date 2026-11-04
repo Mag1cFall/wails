@@ -1242,7 +1242,7 @@ func TestBuildReleaseBody(t *testing.T) {
 		if strings.Contains(body, "Alpha") {
 			t.Errorf("beta body unexpectedly mentions Alpha:\n%s", body)
 		}
-		if !strings.Contains(body, "go install github.com/wailsapp/wails/v3/cmd/wails3@v3.0.0-beta.1") {
+		if !strings.Contains(body, "go install github.com/Mag1cFall/wails/v3/cmd/wails3@v3.0.0-beta.1") {
 			t.Errorf("beta body missing install command:\n%s", body)
 		}
 	})

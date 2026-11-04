@@ -10,7 +10,7 @@ import (
 	"github.com/charmbracelet/bubbles/spinner"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
-	doctorng "github.com/wailsapp/wails/v3/pkg/doctor-ng"
+	doctorng "github.com/Mag1cFall/wails/v3/pkg/doctor-ng"
 )
 
 type state int
