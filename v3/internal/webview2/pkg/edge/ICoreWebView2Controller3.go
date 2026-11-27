@@ -56,6 +56,11 @@ func (i *ICoreWebView2Controller3) AddRef() uintptr {
 	return refCounter
 }
 
+func (i *ICoreWebView2Controller3) Release() uintptr {
+	refCounter, _, _ := i.Vtbl.Release.Call(uintptr(unsafe.Pointer(i)))
+	return refCounter
+}
+
 func (i *ICoreWebView2Controller) GetICoreWebView2Controller3() *ICoreWebView2Controller3 {
 	var result *ICoreWebView2Controller3
 

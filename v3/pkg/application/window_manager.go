@@ -42,7 +42,9 @@ func (wm *WindowManager) GetByID(id uint) (Window, bool) {
 
 // OnCreate registers a callback to be called when a window is created
 func (wm *WindowManager) OnCreate(callback func(Window)) {
+	wm.app.windowsLock.Lock()
 	wm.app.windowCreatedCallbacks = append(wm.app.windowCreatedCallbacks, callback)
+	wm.app.windowsLock.Unlock()
 }
 
 // New creates a new webview window
@@ -62,9 +64,10 @@ func (wm *WindowManager) addAndRun(newWindow *WebviewWindow) {
 
 	wm.app.windowsLock.Lock()
 	wm.app.windows[id] = newWindow
+	callbacks := append([]func(Window){}, wm.app.windowCreatedCallbacks...)
 	wm.app.windowsLock.Unlock()
 
-	for _, hook := range wm.app.windowCreatedCallbacks {
+	for _, hook := range callbacks {
 		hook(newWindow)
 	}
 
@@ -85,11 +88,13 @@ func (wm *WindowManager) Current() Window {
 // Add adds a window to the manager
 func (wm *WindowManager) Add(window Window) {
 	wm.app.windowsLock.Lock()
-	defer wm.app.windowsLock.Unlock()
 	wm.app.windows[window.ID()] = window
+	callbacks := append([]func(Window){}, wm.app.windowCreatedCallbacks...)
+	wm.app.windowsLock.Unlock()
 
-	// Call registered callbacks
-	for _, callback := range wm.app.windowCreatedCallbacks {
+	// Call registered callbacks without holding windowsLock so hooks that run
+	// or remove the window cannot deadlock on windowsLock.
+	for _, callback := range callbacks {
 		callback(window)
 	}
 }

@@ -4,9 +4,14 @@ package edge
 
 import (
 	"runtime"
+	"strings"
 	"testing"
+	"time"
 	"unsafe"
 	"weak"
+
+	"github.com/wailsapp/wails/v3/internal/webview2/internal/w32"
+	"golang.org/x/sys/windows"
 )
 
 func TestHandlerReferenceCounting(t *testing.T) {
@@ -96,5 +101,114 @@ func TestAbandonedChromiumDoesNotRetainWindow(t *testing.T) {
 	}
 	if handler.refs() != 1 {
 		t.Fatal("handler lost its native reference")
+	}
+}
+
+func writeComOutPtr(dst, ptr uintptr) {
+	rtlMoveMemory := windows.NewLazySystemDLL("kernel32.dll").NewProc("RtlMoveMemory")
+	_, _, _ = rtlMoveMemory.Call(dst, uintptr(unsafe.Pointer(&ptr)), unsafe.Sizeof(ptr))
+}
+
+func TestSettingsExtensionMethodsReleaseCOMRefs(t *testing.T) {
+	var (
+		settingsRefs int
+		extRefs      int
+	)
+
+	var extVtbl ICoreWebView2Settings9Vtbl
+	extVtbl.Release = NewComProc(func(uintptr) uintptr {
+		extRefs--
+		return uintptr(extRefs)
+	})
+	extVtbl.PutIsGeneralAutofillEnabled = NewComProc(func(uintptr, uintptr) uintptr { return 0 })
+	extVtbl.PutIsPasswordAutosaveEnabled = NewComProc(func(uintptr, uintptr) uintptr { return 0 })
+	extVtbl.PutIsSwipeNavigationEnabled = NewComProc(func(uintptr, uintptr) uintptr { return 0 })
+	extVtbl.GetIsSwipeNavigationEnabled = NewComProc(func(uintptr, uintptr) uintptr { return 0 })
+	extVtbl.PutIsNonClientRegionSupportEnabled = NewComProc(func(uintptr, uintptr) uintptr { return 0 })
+	extObj := ICoreWebView2Settings9{Vtbl: &extVtbl}
+
+	var settingsVtbl _ICoreWebViewSettingsVtbl
+	settingsVtbl.QueryInterface = NewComProc(func(_, _, out uintptr) uintptr {
+		extRefs++
+		writeComOutPtr(out, uintptr(unsafe.Pointer(&extObj)))
+		return 0
+	})
+	settingsVtbl.Release = NewComProc(func(uintptr) uintptr {
+		settingsRefs--
+		return uintptr(settingsRefs)
+	})
+	settingsObj := ICoreWebViewSettings{vtbl: &settingsVtbl}
+
+	var webviewVtbl iCoreWebView2Vtbl
+	webviewVtbl.GetSettings = NewComProc(func(_, out uintptr) uintptr {
+		settingsRefs++
+		writeComOutPtr(out, uintptr(unsafe.Pointer(&settingsObj)))
+		return 0
+	})
+	webviewObj := ICoreWebView2{vtbl: &webviewVtbl}
+
+	e := &Chromium{
+		webview:                &webviewObj,
+		webview2RuntimeVersion: "140.0.0.0",
+	}
+
+	if err := e.PutIsGeneralAutofillEnabled(true); err != nil {
+		t.Fatalf("PutIsGeneralAutofillEnabled: %v", err)
+	}
+	if err := e.PutIsPasswordAutosaveEnabled(true); err != nil {
+		t.Fatalf("PutIsPasswordAutosaveEnabled: %v", err)
+	}
+	if err := e.PutIsSwipeNavigationEnabled(true); err != nil {
+		t.Fatalf("PutIsSwipeNavigationEnabled: %v", err)
+	}
+	if _, err := e.GetIsSwipeNavigationEnabled(); err != nil {
+		t.Fatalf("GetIsSwipeNavigationEnabled: %v", err)
+	}
+	if err := e.PutIsNonClientRegionSupportEnabled(true); err != nil {
+		t.Fatalf("PutIsNonClientRegionSupportEnabled: %v", err)
+	}
+
+	runtime.KeepAlive(extVtbl)
+	runtime.KeepAlive(settingsVtbl)
+	runtime.KeepAlive(webviewVtbl)
+	runtime.KeepAlive(extObj)
+	runtime.KeepAlive(settingsObj)
+	runtime.KeepAlive(webviewObj)
+
+	if settingsRefs != 0 {
+		t.Fatalf("ICoreWebViewSettings ref count = %d, want 0", settingsRefs)
+	}
+	if extRefs != 0 {
+		t.Fatalf("extended settings COM ref count = %d, want 0", extRefs)
+	}
+}
+
+func TestPumpUntilInitedWMQuitSetsCancellationError(t *testing.T) {
+	runtime.LockOSThread()
+	defer runtime.UnlockOSThread()
+
+	e := NewChromium()
+	w32.User32PostQuitMessage.Call(0)
+
+	if e.pumpUntilInited(5 * time.Second) {
+		t.Fatal("pumpUntilInited reported ready after WM_QUIT")
+	}
+	if e.initErr == nil || !strings.Contains(e.initErr.Error(), "quitting") {
+		t.Fatalf("initErr = %v, want quitting cancellation instead of timeout", e.initErr)
+	}
+
+	var msg w32.Msg
+	gotQuit := false
+	for {
+		got, _, _ := w32.User32PeekMessageW.Call(uintptr(unsafe.Pointer(&msg)), 0, 0, 0, w32.PM_REMOVE)
+		if got == 0 {
+			break
+		}
+		if msg.Message == w32.WM_QUIT {
+			gotQuit = true
+		}
+	}
+	if !gotQuit {
+		t.Fatal("pumpUntilInited did not preserve WM_QUIT in thread message queue")
 	}
 }

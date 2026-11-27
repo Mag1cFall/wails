@@ -338,6 +338,7 @@ func (e *Chromium) pumpUntilInited(timeout time.Duration) bool {
 			if msg.Message == w32.WM_QUIT {
 				// Recovery may return to an outer application loop; preserve its quit.
 				w32.User32PostQuitMessage.Call(msg.WParam)
+				e.initializationFailed(errors.New("WebView2 controller initialisation cancelled: application is quitting"))
 				return false
 			}
 			w32.User32TranslateMessage.Call(uintptr(unsafe.Pointer(&msg)))
@@ -628,7 +629,7 @@ func (e *Chromium) initializeController(controller *ICoreWebView2Controller) uin
 	// reasserting RasterizationScale during monitor transitions can leave that
 	// surface black after DPI increases.
 	if controller3 := e.controller.GetICoreWebView2Controller3(); controller3 != nil {
-		defer func() { controller3.Vtbl.Release.Call(uintptr(unsafe.Pointer(controller3))) }()
+		defer controller3.Release()
 		if !e.CompositionControllerEnabled {
 			// Use raw pixels mode for better performance during resize.
 			if err := controller3.PutBoundsMode(COREWEBVIEW2_BOUNDS_MODE_USE_RAW_PIXELS); err != nil {
@@ -1092,7 +1093,12 @@ func (e *Chromium) GetIsSwipeNavigationEnabled() (bool, error) {
 	if err != nil {
 		return false, err
 	}
+	defer webview2Settings.Release()
 	webview2Settings6 := webview2Settings.GetICoreWebView2Settings6()
+	if webview2Settings6 == nil {
+		return false, UnsupportedCapabilityError
+	}
+	defer webview2Settings6.Release()
 	var result bool
 	result, err = webview2Settings6.GetIsSwipeNavigationEnabled()
 	if err != nil {
@@ -1117,7 +1123,12 @@ func (e *Chromium) PutIsGeneralAutofillEnabled(value bool) error {
 	if err != nil {
 		return err
 	}
+	defer webview2Settings.Release()
 	webview2Settings4 := webview2Settings.GetICoreWebView2Settings4()
+	if webview2Settings4 == nil {
+		return UnsupportedCapabilityError
+	}
+	defer webview2Settings4.Release()
 	return webview2Settings4.PutIsGeneralAutofillEnabled(value)
 }
 
@@ -1132,7 +1143,12 @@ func (e *Chromium) PutIsPasswordAutosaveEnabled(value bool) error {
 	if err != nil {
 		return err
 	}
+	defer webview2Settings.Release()
 	webview2Settings4 := webview2Settings.GetICoreWebView2Settings4()
+	if webview2Settings4 == nil {
+		return UnsupportedCapabilityError
+	}
+	defer webview2Settings4.Release()
 	return webview2Settings4.PutIsPasswordAutosaveEnabled(value)
 }
 
@@ -1144,7 +1160,12 @@ func (e *Chromium) PutIsSwipeNavigationEnabled(enabled bool) error {
 	if err != nil {
 		return err
 	}
+	defer webview2Settings.Release()
 	webview2Settings6 := webview2Settings.GetICoreWebView2Settings6()
+	if webview2Settings6 == nil {
+		return UnsupportedCapabilityError
+	}
+	defer webview2Settings6.Release()
 	err = webview2Settings6.PutIsSwipeNavigationEnabled(enabled)
 	if err != nil {
 		return err
@@ -1160,10 +1181,12 @@ func (e *Chromium) PutIsNonClientRegionSupportEnabled(enabled bool) error {
 	if err != nil {
 		return err
 	}
+	defer webview2Settings.Release()
 	webview2Settings9 := webview2Settings.GetICoreWebView2Settings9()
 	if webview2Settings9 == nil {
 		return UnsupportedCapabilityError
 	}
+	defer webview2Settings9.Release()
 	return webview2Settings9.PutIsNonClientRegionSupportEnabled(enabled)
 }
 
