@@ -85,11 +85,13 @@ func (wm *WindowManager) Current() Window {
 // Add adds a window to the manager
 func (wm *WindowManager) Add(window Window) {
 	wm.app.windowsLock.Lock()
-	defer wm.app.windowsLock.Unlock()
 	wm.app.windows[window.ID()] = window
+	callbacks := append([]func(Window){}, wm.app.windowCreatedCallbacks...)
+	wm.app.windowsLock.Unlock()
 
-	// Call registered callbacks
-	for _, callback := range wm.app.windowCreatedCallbacks {
+	// Call registered callbacks without holding windowsLock so hooks that run
+	// or remove the window cannot deadlock on windowsLock.
+	for _, callback := range callbacks {
 		callback(window)
 	}
 }

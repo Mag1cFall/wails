@@ -47,6 +47,11 @@ func (i *ICoreWebView2Settings4) AddRef() uintptr {
 	return refCounter
 }
 
+func (i *ICoreWebView2Settings4) Release() uintptr {
+	refCounter, _, _ := i.Vtbl.Release.Call(uintptr(unsafe.Pointer(i)))
+	return refCounter
+}
+
 func (i *ICoreWebViewSettings) GetICoreWebView2Settings4() *ICoreWebView2Settings4 {
 	var result *ICoreWebView2Settings4
 

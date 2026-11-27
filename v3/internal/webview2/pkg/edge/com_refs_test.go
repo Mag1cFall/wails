@@ -98,3 +98,77 @@ func TestAbandonedChromiumDoesNotRetainWindow(t *testing.T) {
 		t.Fatal("handler lost its native reference")
 	}
 }
+
+func TestSettingsExtensionMethodsReleaseCOMRefs(t *testing.T) {
+	var (
+		settingsRefs int
+		extRefs      int
+	)
+
+	var extVtbl ICoreWebView2Settings9Vtbl
+	extVtbl.Release = NewComProc(func(uintptr) uintptr {
+		extRefs--
+		return uintptr(extRefs)
+	})
+	extVtbl.PutIsGeneralAutofillEnabled = NewComProc(func(uintptr, uintptr) uintptr { return 0 })
+	extVtbl.PutIsPasswordAutosaveEnabled = NewComProc(func(uintptr, uintptr) uintptr { return 0 })
+	extVtbl.PutIsSwipeNavigationEnabled = NewComProc(func(uintptr, uintptr) uintptr { return 0 })
+	extVtbl.GetIsSwipeNavigationEnabled = NewComProc(func(uintptr, uintptr) uintptr { return 0 })
+	extVtbl.PutIsNonClientRegionSupportEnabled = NewComProc(func(uintptr, uintptr) uintptr { return 0 })
+	extObj := ICoreWebView2Settings9{Vtbl: &extVtbl}
+
+	var settingsVtbl _ICoreWebViewSettingsVtbl
+	settingsVtbl.QueryInterface = NewComProc(func(_, _, out uintptr) uintptr {
+		extRefs++
+		*(*uintptr)(unsafe.Pointer(out)) = uintptr(unsafe.Pointer(&extObj))
+		return 0
+	})
+	settingsVtbl.Release = NewComProc(func(uintptr) uintptr {
+		settingsRefs--
+		return uintptr(settingsRefs)
+	})
+	settingsObj := ICoreWebViewSettings{vtbl: &settingsVtbl}
+
+	var webviewVtbl iCoreWebView2Vtbl
+	webviewVtbl.GetSettings = NewComProc(func(_, out uintptr) uintptr {
+		settingsRefs++
+		*(*uintptr)(unsafe.Pointer(out)) = uintptr(unsafe.Pointer(&settingsObj))
+		return 0
+	})
+	webviewObj := ICoreWebView2{vtbl: &webviewVtbl}
+
+	e := &Chromium{
+		webview:                &webviewObj,
+		webview2RuntimeVersion: "140.0.0.0",
+	}
+
+	if err := e.PutIsGeneralAutofillEnabled(true); err != nil {
+		t.Fatalf("PutIsGeneralAutofillEnabled: %v", err)
+	}
+	if err := e.PutIsPasswordAutosaveEnabled(true); err != nil {
+		t.Fatalf("PutIsPasswordAutosaveEnabled: %v", err)
+	}
+	if err := e.PutIsSwipeNavigationEnabled(true); err != nil {
+		t.Fatalf("PutIsSwipeNavigationEnabled: %v", err)
+	}
+	if _, err := e.GetIsSwipeNavigationEnabled(); err != nil {
+		t.Fatalf("GetIsSwipeNavigationEnabled: %v", err)
+	}
+	if err := e.PutIsNonClientRegionSupportEnabled(true); err != nil {
+		t.Fatalf("PutIsNonClientRegionSupportEnabled: %v", err)
+	}
+
+	runtime.KeepAlive(extVtbl)
+	runtime.KeepAlive(settingsVtbl)
+	runtime.KeepAlive(webviewVtbl)
+	runtime.KeepAlive(extObj)
+	runtime.KeepAlive(settingsObj)
+	runtime.KeepAlive(webviewObj)
+
+	if settingsRefs != 0 {
+		t.Fatalf("ICoreWebViewSettings ref count = %d, want 0", settingsRefs)
+	}
+	if extRefs != 0 {
+		t.Fatalf("extended settings COM ref count = %d, want 0", extRefs)
+	}
+}

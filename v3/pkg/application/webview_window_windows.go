@@ -131,7 +131,7 @@ type windowsWebviewWindow struct {
 }
 
 func (w *windowsWebviewWindow) setMenu(menu *Menu) {
-	if w.parent.options.Windows.DisableMenu {
+	if (w.parent != nil && w.parent.isDestroyed()) || w.parent.options.Windows.DisableMenu {
 		return
 	}
 	if menu == nil {
@@ -402,10 +402,16 @@ func (w *windowsWebviewWindow) nativeWindow() unsafe.Pointer {
 }
 
 func (w *windowsWebviewWindow) setTitle(title string) {
+	if w.hwnd == 0 || (w.parent != nil && w.parent.isDestroyed()) {
+		return
+	}
 	w32.SetWindowText(w.hwnd, title)
 }
 
 func (w *windowsWebviewWindow) setAlwaysOnTop(alwaysOnTop bool) {
+	if w.hwnd == 0 || (w.parent != nil && w.parent.isDestroyed()) {
+		return
+	}
 	var hwndInsertAfter uintptr
 	if alwaysOnTop {
 		hwndInsertAfter = w32.HWND_TOPMOST
@@ -422,6 +428,9 @@ func (w *windowsWebviewWindow) setAlwaysOnTop(alwaysOnTop bool) {
 }
 
 func (w *windowsWebviewWindow) setURL(url string) {
+	if w.hwnd == 0 || (w.parent != nil && w.parent.isDestroyed()) {
+		return
+	}
 	// Navigate to the given URL in the webview
 	w.webviewNavigationCompleted = false
 	w.lastNavigatedURL = url
@@ -429,6 +438,9 @@ func (w *windowsWebviewWindow) setURL(url string) {
 }
 
 func (w *windowsWebviewWindow) setResizable(resizable bool) {
+	if w.hwnd == 0 || (w.parent != nil && w.parent.isDestroyed()) {
+		return
+	}
 	w.setStyle(resizable, w32.WS_THICKFRAME)
 	w.execJS(fmt.Sprintf("window._wails.setResizable(%v);", resizable))
 }
@@ -453,6 +465,9 @@ func (w *windowsWebviewWindow) execJS(js string) {
 }
 
 func (w *windowsWebviewWindow) setBackgroundColour(color RGBA) {
+	if w.hwnd == 0 || (w.parent != nil && w.parent.isDestroyed()) {
+		return
+	}
 	switch w.parent.options.BackgroundType {
 	case BackgroundTypeSolid:
 		w32.SetBackgroundColour(w.hwnd, color.Red, color.Green, color.Blue)
@@ -585,6 +600,8 @@ func (w *windowsWebviewWindow) run() {
 		style = style &^ uint(w32.WS_VISIBLE)
 	}
 
+	allowNonFatal := w.canSurviveStartupFailure()
+
 	w.hwnd = w32.CreateWindowEx(
 		uint(exStyle),
 		w32.MustStringToUTF16Ptr(globalApplication.options.Windows.WndClass),
@@ -600,6 +617,11 @@ func (w *windowsWebviewWindow) run() {
 		nil)
 
 	if w.hwnd == 0 {
+		if allowNonFatal {
+			globalApplication.handleError(fmt.Errorf("unable to create window %q", options.Title))
+			w.cleanupFailedStartup()
+			return
+		}
 		globalApplication.fatal("unable to create window")
 	}
 
@@ -617,7 +639,11 @@ func (w *windowsWebviewWindow) run() {
 		w.setSize(options.Width, options.Height)
 	}
 
-	if !w.setupChromium(false) {
+	if !w.setupChromiumWithPolicy(false, allowNonFatal) {
+		if allowNonFatal {
+			w.cleanupFailedStartup()
+			return
+		}
 		globalApplication.fatal("unable to initialise WebView2 for window %q", options.Title)
 		return
 	}
@@ -2308,6 +2334,7 @@ func (w *windowsWebviewWindow) resyncWebviewRasterizationScale() bool {
 	if controller3 == nil {
 		return false
 	}
+	defer controller3.Release()
 	dpiX, _ := w.DPI()
 	if dpiX == 0 {
 		return false
@@ -2551,26 +2578,119 @@ func (w *windowsWebviewWindow) processRequest(
 	}
 }
 
+// canSurviveStartupFailure reports whether the application can stay running
+// if this window fails to initialise its WebView2 controller.
+//
+// A single-window application with nothing else hosting it exits on WebView2
+// startup failure (#5953). When DisableQuitOnLastWindowClosed is enabled (such
+// as tray-hosted or local-service apps) or another window is already running,
+// calling os.Exit(1) would tear down the rest of the process without running
+// shutdown hooks.
+func (w *windowsWebviewWindow) canSurviveStartupFailure() bool {
+	if globalApplication == nil {
+		return false
+	}
+	if globalApplication.options.Windows.DisableQuitOnLastWindowClosed {
+		return true
+	}
+	if nativeApp, ok := globalApplication.impl.(*windowsApp); ok && nativeApp != nil {
+		nativeApp.windowMapLock.RLock()
+		hasOtherWindow := len(nativeApp.windowMap) > 0
+		nativeApp.windowMapLock.RUnlock()
+		return hasOtherWindow
+	}
+	return false
+}
+
+// cleanupFailedStartup releases resources created before registerWindow when
+// initial window setup fails in an application that can continue without this
+// window.
+func (w *windowsWebviewWindow) cleanupFailedStartup() {
+	if w.parent != nil {
+		w.parent.markAsDestroyed()
+	}
+	if w.visibilityTimeout != nil {
+		w.visibilityTimeout.Stop()
+		w.visibilityTimeout = nil
+	}
+	w.requestCancellation.close()
+	if w.chromium != nil {
+		w.chromium.Close()
+	}
+	// Re-enable parent window if a modal relationship was attached before failure.
+	if w.parentHWND != 0 {
+		w32.EnableWindow(w.parentHWND, true)
+		w.parentHWND = 0
+	}
+	if w.menu != nil {
+		menu := w.menu
+		w.menu = nil
+		detached := w.hwnd == 0 || w32.SetMenu(w.hwnd, 0)
+		menu.takeRuntimeBitmaps()
+		if w.parent != nil {
+			w.parent.removeMenuBindingsOf(itemsOnlyIn(menu, nil))
+		}
+		if detached {
+			menu.Destroy()
+		} else {
+			menu.destroyed = true
+			menu.freeBitmaps()
+			menu.detachedSubmenus.destroyAll()
+		}
+	}
+	if w.hwnd != 0 {
+		w32.DestroyWindow(w.hwnd)
+		w.hwnd = 0
+	}
+	if w.parent == nil {
+		return
+	}
+	if globalApplication != nil && globalApplication.messageProcessor != nil {
+		globalApplication.messageProcessor.CancelWindowCalls(w.parent.id)
+	}
+	w.parent.cancellersLock.Lock()
+	cancellers := w.parent.cancellers
+	w.parent.cancellers = nil
+	w.parent.cancellersLock.Unlock()
+	for _, cancel := range cancellers {
+		cancel()
+	}
+	if globalApplication != nil && globalApplication.Window != nil {
+		globalApplication.Window.Remove(w.parent.id)
+	}
+}
+
 // setupChromiumConfigError reports a WebView2 configuration failure from
-// inside setupChromium. Initial startup keeps the existing fatal behaviour —
-// a controller that cannot be configured cannot serve the window at all.
-// During post-recovery reconfiguration (recovering) it instead returns to
-// rebuildWebView so the partially configured replacement controller can be
-// discarded and retried within the existing attempt budget, rather than a
-// single failed settings COM call taking down the whole host (#6167).
+// inside setupChromium. Initial startup keeps the existing fatal behaviour
+// when the application cannot continue without this window. When recovering
+// (#6167) or when the application can survive a failed window startup, it
+// reports the error and returns false so the partial controller is closed
+// without terminating the process.
 func (w *windowsWebviewWindow) setupChromiumConfigError(recovering bool, err error) bool {
-	if !recovering {
+	return w.setupChromiumConfigErrorWithPolicy(recovering, recovering || w.canSurviveStartupFailure(), err)
+}
+
+func (w *windowsWebviewWindow) setupChromiumConfigErrorWithPolicy(recovering, allowNonFatal bool, err error) bool {
+	if !recovering && !allowNonFatal {
 		globalApplication.handleFatalError(err)
 		return false
 	}
-	globalApplication.error("webview2: controller recovery configuration failed: %v", err)
+	if recovering {
+		globalApplication.error("webview2: controller recovery configuration failed: %v", err)
+	} else {
+		globalApplication.handleError(err)
+	}
 	return false
 }
 
 func (w *windowsWebviewWindow) setupChromium(recovering bool) (ready bool) {
+	return w.setupChromiumWithPolicy(recovering, recovering || w.canSurviveStartupFailure())
+}
+
+func (w *windowsWebviewWindow) setupChromiumWithPolicy(recovering, allowNonFatal bool) (ready bool) {
 	chromium := w.chromium
 	defer func() {
-		if recovering && !ready {
+		if !ready && chromium != nil {
 			chromium.Close()
 		}
 	}()
@@ -2582,7 +2702,11 @@ func (w *windowsWebviewWindow) setupChromium(recovering bool) (ready bool) {
 		globalApplication.options.Windows.WebviewBrowserPath,
 	)
 	if err != nil {
-		globalApplication.error("error getting WebView2 version: %w", err)
+		if !recovering && allowNonFatal {
+			globalApplication.handleError(fmt.Errorf("error getting WebView2 version: %w", err))
+		} else {
+			globalApplication.error("error getting WebView2 version: %w", err)
+		}
 		return false
 	}
 	globalApplication.capabilities = capabilities.NewCapabilities(webview2version)
@@ -2641,6 +2765,11 @@ func (w *windowsWebviewWindow) setupChromium(recovering bool) (ready bool) {
 	if recovering {
 		if err := chromium.EmbedWithError(w.hwnd); err != nil {
 			globalApplication.error("webview2: controller recovery failed: %v", err)
+			return false
+		}
+	} else if allowNonFatal {
+		if err := chromium.EmbedWithError(w.hwnd); err != nil {
+			globalApplication.handleError(err)
 			return false
 		}
 	} else if !chromium.Embed(w.hwnd) {
@@ -2702,6 +2831,7 @@ func (w *windowsWebviewWindow) setupChromium(recovering bool) (ready bool) {
 				globalApplication.error("webview2: query monitor scale detection: %v", err)
 				w.monitorScaleDetectionOn = true
 			}
+			c3.Release()
 		}
 	}
 
@@ -2717,7 +2847,7 @@ func (w *windowsWebviewWindow) setupChromium(recovering bool) (ready bool) {
 	if chromium.HasCapability(edge.SwipeNavigation) {
 		err := chromium.PutIsSwipeNavigationEnabled(opts.EnableSwipeGestures)
 		if err != nil {
-			return w.setupChromiumConfigError(recovering, err)
+			return w.setupChromiumConfigErrorWithPolicy(recovering, allowNonFatal, err)
 		}
 	}
 
@@ -2741,7 +2871,7 @@ func (w *windowsWebviewWindow) setupChromium(recovering bool) (ready bool) {
 		if errors.Is(err, edge.UnsupportedCapabilityError) {
 			globalApplication.warning("unsupported capability: GeneralAutofillEnabled")
 		} else {
-			return w.setupChromiumConfigError(recovering, err)
+			return w.setupChromiumConfigErrorWithPolicy(recovering, allowNonFatal, err)
 		}
 	}
 
@@ -2750,28 +2880,28 @@ func (w *windowsWebviewWindow) setupChromium(recovering bool) (ready bool) {
 		if errors.Is(err, edge.UnsupportedCapabilityError) {
 			globalApplication.warning("unsupported capability: PasswordAutosaveEnabled")
 		} else {
-			return w.setupChromiumConfigError(recovering, err)
+			return w.setupChromiumConfigErrorWithPolicy(recovering, allowNonFatal, err)
 		}
 	}
 
 	chromium.Resize()
 	settings, err := chromium.GetSettings()
 	if err != nil {
-		return w.setupChromiumConfigError(recovering, err)
+		return w.setupChromiumConfigErrorWithPolicy(recovering, allowNonFatal, err)
 	}
 	if settings == nil {
-		return w.setupChromiumConfigError(recovering, errors.New("error getting settings"))
+		return w.setupChromiumConfigErrorWithPolicy(recovering, allowNonFatal, errors.New("error getting settings"))
 	}
 	defer settings.Release()
 	err = settings.PutAreDefaultContextMenusEnabled(
 		debugMode || !w.parent.options.DefaultContextMenuDisabled,
 	)
 	if err != nil {
-		return w.setupChromiumConfigError(recovering, err)
+		return w.setupChromiumConfigErrorWithPolicy(recovering, allowNonFatal, err)
 	}
 
 	if err := w.enableDevTools(settings); err != nil {
-		return w.setupChromiumConfigError(recovering, err)
+		return w.setupChromiumConfigErrorWithPolicy(recovering, allowNonFatal, err)
 	}
 
 	if w.parent.options.Zoom > 0.0 {
@@ -2779,20 +2909,20 @@ func (w *windowsWebviewWindow) setupChromium(recovering bool) (ready bool) {
 	}
 	err = settings.PutIsZoomControlEnabled(w.parent.options.ZoomControlEnabled)
 	if err != nil {
-		return w.setupChromiumConfigError(recovering, err)
+		return w.setupChromiumConfigErrorWithPolicy(recovering, allowNonFatal, err)
 	}
 
 	err = settings.PutIsStatusBarEnabled(false)
 	if err != nil {
-		return w.setupChromiumConfigError(recovering, err)
+		return w.setupChromiumConfigErrorWithPolicy(recovering, allowNonFatal, err)
 	}
 	err = settings.PutAreBrowserAcceleratorKeysEnabled(false)
 	if err != nil {
-		return w.setupChromiumConfigError(recovering, err)
+		return w.setupChromiumConfigErrorWithPolicy(recovering, allowNonFatal, err)
 	}
 	err = settings.PutIsSwipeNavigationEnabled(false)
 	if err != nil {
-		return w.setupChromiumConfigError(recovering, err)
+		return w.setupChromiumConfigErrorWithPolicy(recovering, allowNonFatal, err)
 	}
 
 	if debugMode && w.parent.options.OpenInspectorOnStartup {
@@ -2808,7 +2938,7 @@ func (w *windowsWebviewWindow) setupChromium(recovering bool) (ready bool) {
 		colour = RGBA{}
 	}
 	if err := chromium.SetBackgroundColourWithError(colour.Red, colour.Green, colour.Blue, colour.Alpha); err != nil {
-		return w.setupChromiumConfigError(recovering, err)
+		return w.setupChromiumConfigErrorWithPolicy(recovering, allowNonFatal, err)
 	}
 
 	// WebView2's PermissionRequested handler checks the global permission
@@ -2821,7 +2951,7 @@ func (w *windowsWebviewWindow) setupChromium(recovering bool) (ready bool) {
 		chromium.SetGlobalPermission(edge.CoreWebView2PermissionStateAllow)
 	}
 	if err := chromium.AddWebResourceRequestedFilterWithError("*", edge.COREWEBVIEW2_WEB_RESOURCE_CONTEXT_ALL); err != nil {
-		return w.setupChromiumConfigError(recovering, err)
+		return w.setupChromiumConfigErrorWithPolicy(recovering, allowNonFatal, err)
 	}
 
 	w.startRequestCancellation(w.navigateInitialPage)
